@@ -1,0 +1,144 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-6">
+        <label><b>В какой деятельности Вы бы хотели реализовать себя, обучаясь в Академии МВД?</b></label>
+        {% if form.activity.errors %}
+            {% for error in form.activity.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.activity class+="m-0 p-0" %}
+        {% render_field form.activity_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 500px;" %}
+    </div>
+
+    <div class="col-md-6">
+        <label><b>Какими способностями, на Ваш взгляд, Вы обладаете?</b></label>
+        {% if form.ability.errors %}
+            {% for error in form.ability.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.ability class+="m-0 p-0" %}
+        {% render_field form.ability_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 500px;" %}
+    </div>
+</div>
+
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Как часто, за последний год, Вы играли в компьютерные / мобильные игры</b></label><br>
+
+        <ul class="m-0 p-0">
+            <li class="mt-2 mb-2">
+                <input type="radio" name="gaming" value="1" checked>&nbsp;не играл(-а)
+            </li>
+            <li class="mt-2 mb-2">
+                <input type="radio" name="gaming" value="2">&nbsp;не более 2 раз в неделю
+            </li>
+            <li class="d-flex align-items-center mt-2 mb-2">
+                <input type="radio" name="gaming" value="3">&nbsp;3–5 раз в неделю, по&nbsp; {% render_field form.gaming_hours|attr:"disabled" class+="form-control year_input" id="id_gaming_hours_1" %} &nbsp; часа(-ов); &nbsp;
+            </li>
+
+            <li class="d-flex align-items-center mt-2 mb-2">
+                <input type="radio" name="gaming" value="4">&nbsp;ежедневно, по&nbsp;{% render_field form.gaming_hours|attr:"disabled" class+="form-control year_input" id="id_gaming_hours_2" %}&nbsp;часа(-ов). &nbsp;
+            </li>
+        </ul>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex align-items-center">
+            <label><b class="d-inline-flex d-flex align-items-center">Укажите количество постоянных друзей в повседневной жизни&nbsp;{% render_field form.friends_count class+="form-control year_input" %} &nbsp;человек.</b></label>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b class="d-inline-flex">Какие мессенджеры / мобильные приложения предпочитаете для общения?</b></label>
+        {% if form.messenger.errors %}
+            {% for error in form.messenger.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.messenger class+="m-0 p-0" %}
+        {% render_field form.messenger_other|attr:"rows:1"|attr:"disabled" class+="form-control" %}
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <ul class="m-0 p-0">
+            <li class="mt-2 mb-2">
+                <label><b class="d-inline-flex">Курите ли Вы?</b></label><br>
+                <input type="radio" class="m-0 p-0" name="smoking" value="1" checked>&nbsp;не курю и никогда не курил&nbsp;<br>
+            </li>
+
+            <li class="d-inline-flex d-flex align-items-center mt-2 mb-2">
+                <input type="radio" name="smoking" value="2">&nbsp;не курю, но впервые пробовал в&nbsp;
+                {% render_field form.smoking_try_in_year|attr:"disabled" class+="form-control year_input" style="width: 100px;" %}&nbsp; лет<br>
+            </li>
+
+            <li class="d-flex align-items-center mt-2 mb-2">
+                <input type="radio" name="smoking" value="3">&nbsp;курил с&nbsp;
+                {% render_field form.smoking_beginning_in_year|attr:"disabled" id="id_smoking_beginning_in_year_1" class+="form-control year_input" style="width: 100px;" %}&nbsp;лет, бросил в&nbsp;
+                {% render_field form.smoking_ending_in_year|attr:"disabled" class+="form-control year_input" style="width: 100px;" %}&nbsp;году <br>
+            </li>
+
+
+            <li class="d-flex align-items-center mt-2 mb-2">
+                <input type="radio" name="smoking" value="4">&nbsp;курю иногда (периодически) с&nbsp;
+                {% render_field form.smoking_beginning_in_year|attr:"disabled" id="id_smoking_beginning_in_year_2" class+="form-control year_input" style="width: 100px;" %}&nbsp; лет
+            </li>
+
+            <li class="d-flex align-items-center mt-2 mb-2">
+                <input type="radio" name="smoking" value="5">&nbsp;курю постоянно с&nbsp;
+                {% render_field form.smoking_beginning_in_year|attr:"disabled" id="id_smoking_beginning_in_year_3" class+="form-control year_input" style="width: 100px;" %} &nbsp;лет
+            </li>
+        </ul>
+
+
+
+
+
+
+
+        {#        <label><b class="d-inline-flex">Курите ли Вы?</b></label><br>#}
+        {#        <input type="radio" name="smoking" value="1" checked>&nbsp;не курю и никогда не курил&nbsp;<br>#}
+        {#        <div class="d-inline-flex">#}
+        {#            <input type="radio" name="smoking" value="2">&nbsp;не курю, но впервые пробовал в&nbsp;#}
+        {#            {% render_field form.smoking_try_in_year|attr:"disabled" class+="form-control year_input" style="width: 100px;" %}&nbsp; лет<br>#}
+        {#        </div><br>#}
+        {#        <div class="d-inline-flex">#}
+        {#            <input type="radio" name="smoking" value="3">&nbsp;курил с&nbsp;#}
+        {#            {% render_field form.smoking_beginning_in_year|attr:"disabled" id="id_smoking_beginning_in_year_1" class+="form-control year_input" style="width: 100px;" %}&nbsp;лет, бросил в&nbsp;#}
+        {#            {% render_field form.smoking_ending_in_year|attr:"disabled" class+="form-control" style="width: 100px;" %}&nbsp;году <br>#}
+        {#        </div><br>#}
+        {#        <div class="d-inline-flex">#}
+        {#            <input type="radio" name="smoking" value="4">курю иногда (периодически) с&nbsp;#}
+        {#            {% render_field form.smoking_beginning_in_year|attr:"disabled" id="id_smoking_beginning_in_year_2" class+="form-control year_input" style="width: 100px;" %}&nbsp; лет<br>#}
+        {#        </div><br>#}
+        {#        <div class="d-inline-flex">#}
+        {#            <input type="radio" name="smoking" value="5">курю постоянно с&nbsp;#}
+        {#            {% render_field form.smoking_beginning_in_year|attr:"disabled" id="id_smoking_beginning_in_year_3" class+="form-control year_input" style="width: 100px;" %} &nbsp;лет<br>#}
+        {#        </div><br>#}
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b class="d-inline-flex">Если бы Вы не поступили в Академию МВД, то где и по какой специальности предпочли бы учиться/работать? </b></label>
+        {% render_field form.if_had_not_entered|attr:"rows:3" class+="form-control" %}<br>
+    </div>
+</div>

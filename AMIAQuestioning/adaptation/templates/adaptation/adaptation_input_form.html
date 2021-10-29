@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load widget_tweaks %}
+    {% load static %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'main/css/bs5/bootstrap.min.css' %}">
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">#}
+    <link rel="shortcut icon" href="{% static 'questioning/img/favicon.ico' %}" />
+
+    <title>Анкета</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    {% include 'course/nav.html' %}
+</div>
+
+<div class="container">
+    <br>
+    {% for error in form.non_field_errors %}
+        <b>{{ field.label }} {{ error }}</b><br>
+    {% endfor %}
+
+    {% for field in form %}
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert">
+                    {{ field.label }} - {{ error }}<br>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    <h4><div class="fixed-bottom m-2 badge bg-dark" id="user_timer" style="width: 100px;"></div></h4>
+{#    <input type="hidden" name="timer" id="user_timer_input">#}
+    <br>
+    <h5 class="d-flex justify-content-center">Оценка адаптации к условиям обучения в Академии МВД</h5><br>
+    <p class="card-text" align="justify">
+        ИНСТРУКЦИЯ:
+        Товарищ, курсант! Просим Вас ответить на вопросы анкеты. Важно, чтобы Вы отразили исключительно личное мнение, т.к. Ваше видение ситуации может оказать существенную помощь в разработке предложений и рекомендаций для дальнейшей работы с первокурсниками, и в конечном итоге привести к позитивным изменениям.
+        От искренности Ваших ответов будет зависеть объективность наших выводов и конкретная помощь. Результаты анкетирования анализируются в обобщенном виде.
+        ВНИМАНИЕ! В соответствии с законом Республики Беларусь от 1 июля 2010 г. № 153-З «Об оказании психологической помощи» гарантируем конфиденциальность Ваших ответов.
+    </p>
+    <form method="POST" action="{% url 'adaptation:adaptation_add' %}" id="adaptation_form" class="needs-validation" novalidate>{% csrf_token %}
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Ф.И.О (полностью)</label>
+                    {% render_field form.fio class+="form-control shadow-lg bg-white rounded" placeholder="Например: Иванов Иван Иванович" %}
+                    {% render_field form.timer class+="form-control" type="hidden" %}
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Группа</label>
+                    {% render_field form.group class+="form-control shadow-lg bg-white rounded" %}
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Должность</label>
+                    {% render_field form.position class+="form-select shadow-lg bg-white rounded" %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">1. Свое общее физическое самочувствие оцениваю как:</h5>
+                <p class="card-text">
+                    {% for radio in form.physical_well_being %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">2. Мне сложно сосредоточиться:</h5>
+
+                <p class="card-text">
+                    {% for radio in form.hard_to_concentrate %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">3. Я хорошо запоминаю информацию</h5>
+                <p class="card-text">
+                    {% for radio in form.remember_information %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">4. Мне труднее сконцентрироваться, чем большинству курсантов, с которыми я вместе обучаюсь</h5>
+                <p class="card-text">
+                    {% for radio in form.more_hard_to_concentrate %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">5. В последнее время мой сон преимущественно</h5>
+                <p class="card-text">
+                    {% for radio in form.sleep %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">6. В последнее время, как правило, я ...</h5>
+                <p class="card-text">
+                    {% for radio in form.sleep_last_time %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">7. По утрам чувствую, что выспался и отдохнул</h5>
+                <p class="card-text">
+                    {% for radio in form.sleep_morning %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">8. В дневное время суток чувствую сонливость</h5>
+                <p class="card-text">
+                    {% for radio in form.sleep_in_daytime %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">9. Из-за переживаний и волнений головная боль случается ... </h5>
+                <p class="card-text">
+                    {% for radio in form.headache %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">10. Как правило, у меня:</h5>
+                <p class="card-text">
+                    {% for radio in form.appetite_as_a_rule %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">11. Отмечаете ли Вы у себя быструю утомляемость?</h5>
+                <p class="card-text">
+                    {% for radio in form.fast_fatiguability %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">12. Что Вы можете сказать о Вашей учебной группе?</h5>
+                <p class="card-text">
+                    {% for radio in form.tell_about_the_study_group %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">13. Как часто в Вашей учебноей группе происходят межличностные конфликты?</h5>
+                <p class="card-text">
+                    {% for radio in form.conflicts_in_group %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">14. На данный момент, есть ли у Вас ЗНАЧИМЫЕ неразрешенные вопросы в отношениях с кем-либо (однокурсники, родители, друзья и т.п.), которые вызывают беспокойство?</h5>
+                <p class="card-text">
+                    {% for radio in form.significant_unresolved_issues %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">15. Какой из конфликтов, случись он с Вами на самом деле, вы бы переживали остро и дольше всего?</h5>
+                <p class="card-text">
+                    {% for radio in form.go_through_a_conflict %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">16. Как Вы оцениваете психологический климат в Вашей учебной группе?</h5>
+                <p class="card-text">
+                    {% for radio in form.climate_in_group %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">17. Удовлетворены ли Вы взаимоотношениями в коллективе (между курсантами)?</h5>
+                <p class="card-text">
+                    {% for radio in form.satisfied_with_the_relationship %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">18. Удовлетворены ли Вы сплоченностью Вашего коллектива?</h5>
+                <p class="card-text">
+                    {% for radio in form.team_cohesion %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">19. У меня складывается впечатление, что в группе меня никто не понимает</h5>
+                <p class="card-text">
+                    {% for radio in form.impression_of_not_understanding %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">20. Мое мнение не совпадает с мнением одногрупников</h5>
+                <p class="card-text">
+                    {% for radio in form.opinion_does_not_match %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">21. Мне кажется, что окружающие особенно часто поступают несправедливо по отношению ко мне</h5>
+                <p class="card-text">
+                    {% for radio in form.others_do_not_fair %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">22. Есть ли в группе люди, с которыми у Вас натянутые отношения</h5>
+                <p class="card-text">
+                    {% for radio in form.strained_relationship %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">23. Как Вы оцените свою принадлежность к группе?</h5>
+                <p class="card-text">
+                    {% for radio in form.group_membership %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">24. Самое безопасное для меня - никому не доверять</h5>
+                <p class="card-text">
+                    {% for radio in form.safe_trust_no_one %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">25. Как Вы считаете, отношение руководства курса к курсантам нуждается в улучшении?</h5>
+                <p class="card-text">
+                    {% for radio in form.attitude_needs_improvement %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">26. Укажите Ваш средний балл (по итогам первой сессии). Если не помните, напишите примерно.</h5>
+                <p class="card-text">
+                    {% render_field form.average_score class+="form-control" style="width: 100px;" %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">27. Возникают ли у Вас трудности в учебе?</h5>
+                <p class="card-text">
+                    {% for radio in form.learning_difficulties %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">28. Усвоение учебного материала мне дается труднее, чем большинству одногруппников</h5>
+                <p class="card-text">
+                    {% for radio in form.assimilation_of_material %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">29. Удовлетворены ли Вы нагрузками в учебе</h5>
+                <p class="card-text">
+                    {% for radio in form.study_load_satisfaction %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">30. Как бы Вы оценили свою учебную нагрузку?</h5>
+                <p class="card-text">
+                    {% for radio in form.study_load_appraisal %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">31. Интересно ли Вам обучаться в Академии МВД?</h5>
+                <p class="card-text">
+                    {% for radio in form.is_it_interesting_to_study %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">32. Удовлетворены ли Вы тем как проходит Ваше обучение?</h5>
+                <p class="card-text">
+                    {% for radio in form.satisfied_with_the_training %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">33. Как Вы думаете, большинство одногруппников довольны обучением больше, чем Вы?</h5>
+                <p class="card-text">
+                    {% for radio in form.satisfied_with_the_training_group %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">34. Посоветовали бы Вы своим знакомым поступать в Академию МВД?</h5>
+                <p class="card-text">
+                    {% for radio in form.would_advise %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">35. Оправдались ли Ваши ожидания по поводу обучения в Академии МВД?</h5>
+                <p class="card-text">
+                    {% for radio in form.were_the_expectations_met %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">36. На сколько оправдались Ваши ожидания относительно обучения в Академии МВД?</h5>
+                <p class="card-text">
+                    {% for radio in form.how_much_were_the_expectations_met %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">37. Ваше личное мнение об обучении в Академии МВД, в августе, на момент учебного сбора ("КМБ")</h5>
+                <smal>Примечание: 1 балл - очень плохое; 10 баллов - очень хорошее</smal>
+                <p class="card-text">
+                    {% for radio in form.first_opinion %}
+                        <div class="form-check form-check-inline">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">38. Ваше личное мнение об обучении в Академии МВД на данный момент</h5>
+                <smal>Примечание: 1 балл - очень плохое; 10 баллов - очень хорошее</smal>
+                <p class="card-text">
+                    {% for radio in form.current_opinion %}
+                        <div class="form-check form-check-inline">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">39. Задумывались ли Вы на тем, чтобы уйти (уволиться) со службы по собственному желанию?</h5>
+                <p class="card-text">
+                    {% for radio in form.thought_about_dismissal %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">40. Приходят ли к Вам мысли, что по сравнению со студентами гражданских ВУЗов Ваша курсантская жизнь не кажется такой интересной и насыщенной?</h5>
+                <p class="card-text">
+                    {% for radio in form.thoughts_about_not_interesting_life %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">41. Ощущаю, что жизнь проходит мимо меня</h5>
+                <p class="card-text">
+                    {% for radio in form.thoughts_life_is_passing_by %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">42. Есть ли у Вас планы отчислиться из Академии МВД?</h5>
+                <p class="card-text">
+                    {% for radio in form.there_are_plans_to_deduct %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">43. Как правило, время в Академии МВД для меня протекает:</h5>
+                <p class="card-text">
+
+                    {% for radio in form.time_passes_as_a_rule %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">44. С момента поступления в Академию МВД, происходила ли с Вами хотя бы раз значимая эмоциональная ситуация (истерика, агрессия, нервный срыв и т.п.)?</h5>
+                <p class="card-text">
+                    {% for radio in form.hysterics_or_nervous_breakdown %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">45. Бывают ли у Вас без видимой причины спады и подъемы настроения?</h5>
+                <p class="card-text">
+                    {% for radio in form.recession_and_rise_in_mood %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">46. С каким настроением Вы обычно посещаете учебные занятия?</h5>
+                <p class="card-text">
+                    {% for radio in form.mood_in_the_classroom %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">47. Беспокоят ли Вас мысли (воспоминания) о разлуке с родными и близкими?</h5>
+                <p class="card-text">
+                    {% for radio in form.thoughts_of_separation %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">48. Как Вы ОБЫЧНО поступаете, когда сталкиваетесь с трудностями в процессе обучения?</h5>
+                <p class="card-text">
+                    {% for radio in form.learning_difficulties_how %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">49. Как проходит Ваша адаптация к бытовым условиям и предъявляемым требованиям?</h5>
+                <p class="card-text">
+                    {% for radio in form.how_is_adaptation_going %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">50. На предложенные вопросы Вы отвечали:</h5>
+                <p class="card-text">
+                    {% for radio in form.you_answered %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">51. Что вызывает у Вас НАИБОЛЬШЕЕ напряжение, неудовлетворенность, дискомфорт или сложность?</h5>
+                <p class="card-text">
+                    {% for radio in form.tension %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                {% render_field form.tension_other|attr:"rows:1"|attr:"disabled" class+="form-control" %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">52. Закончите предложение одним или несколькими словами либо фразой</h5>
+                <p class="card-text">
+                    Свое будущее в Академии МВД я представляю
+                    {% render_field form.the_future_i_imagine class+="form-control" rows="1" %}<br>
+                    Знаю, что глупо, но боюсь
+                    {% render_field form.i_know_it_is_stupid_but_afraid class+="form-control" rows="1" %}<br>
+                    Сомневаюсь в том, что
+                    {% render_field form.i_doubt_that class+="form-control" rows="1" %}<br>
+                    Больше всего меня возмущает (раздражает), мне не нравится
+                    {% render_field form.most_outrages_me class+="form-control" rows="1" %}<br>
+                    Мое представление о выбранной профессии
+                    {% render_field form.idea_of_the_chosen_profession class+="form-control" rows="1" %}<br>
+                    Подчинение приказам для меня
+                    {% render_field form.obeying_orders class+="form-control" rows="1" %}<br>
+                    Мой жизненный девиз звучит так
+                    {% render_field form.life_motto class+="form-control" rows="1" %}<br>
+                    Если все против меня, то
+                    {% render_field form.if_everyone_is_against_me class+="form-control" rows="1" %}
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">53. Ваши идеи и предложения по улучшению процесса адаптации первокурсников. Также можете привести примеры нелепых, на ваш взгляд, правил</h5>
+                <p class="card-text">
+                    {% render_field form.ideas_and_assumptions class+="form-control" rows="1" %}<br>
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">54. Необходима ли Вам беседа с психологом? (для помощи в решении трудностей, связанных с адаптацией, вхождением в коллектив, неопределенностью выбора профессии т.п.):</h5>
+                <p class="card-text">
+                    {% for radio in form.need_a_conversation %}
+                        <div class="form-check">
+                            {{ radio.tag }}
+                            <label for="{{ radio.id_for_label }}" class="form-check-label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                {% render_field form.need_a_conversation_theme|attr:"disabled" class+="form-control" rows="1" %}
+                </p>
+            </div>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit">Отправить анкету</button>
+        <div style="height: 30px;"></div>
+    </form>
+</div>
+
+{#<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>#}
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>#}
+<script src="{% static 'main/js/JQueryLocal.js' %}"></script>
+<script src="{% static 'main/js/bs5/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'adaptation/js/formSubmit.js' %}"></script>
+<script src="{% static 'adaptation/js/UI.js' %}"></script>
+<script src="{% static 'adaptation/js/timer.js' %}"></script>
+
+</body>
+</html>

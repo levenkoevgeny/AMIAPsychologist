@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    <title>Анкета</title>
+{% endblock %}
+
+{% block nav %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">Ваша анкета отправлена!</h1>
+            <p class="lead">Благодарим Вас за ответы и участие в опросе!</p>
+            <p class="lead"><a href="{% url 'questioning:add' %}">Вернуться к анкетированию</a></p>
+            <hr class="my-4">
+        </div>
+    </div>
+{% endblock %}

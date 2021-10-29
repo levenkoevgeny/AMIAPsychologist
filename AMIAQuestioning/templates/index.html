@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>Home</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+    <style>
+        @media (max-width: 767.98px) {
+            .offcanvas-collapse {
+                position: fixed;
+                top: 56px; /* Height of navbar */
+                bottom: 0;
+                width: 100%;
+                padding-right: 1rem;
+                padding-left: 1rem;
+                overflow-y: auto;
+                background-color: var(--gray-dark);
+                transition: -webkit-transform .3s ease-in-out;
+                transition: transform .3s ease-in-out;
+                transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;
+                -webkit-transform: translateX(100%);
+                transform: translateX(100%);
+            }
+
+            .offcanvas-collapse.open {
+                -webkit-transform: translateX(-1rem);
+                transform: translateX(-1rem); /* Account for horizontal padding on navbar */
+            }
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            color: rgba(255, 255, 255, .75);
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-underline .nav-link {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: .875rem;
+            color: var(--secondary);
+        }
+
+        .nav-underline .nav-link:hover {
+            color: var(--blue);
+        }
+
+        .nav-underline .active {
+            font-weight: 500;
+            color: var(--gray-dark);
+        }
+
+        .text-white-50 {
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .bg-purple {
+            background-color: var(--purple);
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .box-shadow {
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+        }
+
+        .lh-100 {
+            line-height: 1;
+        }
+
+        .lh-125 {
+            line-height: 1.25;
+        }
+
+        .lh-150 {
+            line-height: 1.5;
+        }
+    </style>
+
+    <br>
+    <main role="main" class="container">
+        <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
+            <img class="mr-3" src="{% static 'questioning/img/favicon.ico' %}" alt="" width="48" height="48">
+            <div class="lh-100">
+                <h6 class="mb-0 text-white lh-100">Отдел психологического сопровождения</h6>
+            </div>
+        </div>
+
+
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Анкеты и тесты для прохождения</h6>
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <strong class="text-gray-dark">Анонимная анкета</strong>
+                            <span class="d-block pt-2">Анонимная анкета изучения предпочтений профессионального выбора абитуриента</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'questioning:add' %}" class="btn btn-outline-primary"
+                               style="min-width: 114px;">
+                                <nobr>Пройти тест</nobr>
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'questioning:dashboard-pre' %}" class="btn btn-outline-primary">Смотреть
+                                    результаты</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <strong class="text-gray-dark">Анкета первокурсника</strong>
+                            <span class="d-block mt-2">Анкета первокурсника</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'course:add' %}" class="btn btn-outline-primary" style="min-width: 114px;">
+                                <nobr>Пройти тест</nobr>
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'course:dashboard' %}" class="btn btn-outline-primary">Смотреть
+                                    результаты</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <strong class="text-gray-dark">Анкета выпускника</strong>
+                            <span class="d-block mt-2">Анкета выпускника</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'graduate:add' %}" class="btn btn-outline-primary"
+                               style="min-width: 114px;">
+                                <nobr>Пройти тест</nobr>
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'graduate:dashboard' %}" class="btn btn-outline-primary">Смотреть
+                                    результаты</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <strong class="text-gray-dark">Тест оценки психологической устойчивости</strong>
+                            <span class="d-block mt-2">Опросник (60 утверждений)</span>
+                        </div>
+
+                        <div>
+                            <a href="{% url 'testing:test_add' %}" class="btn btn-outline-primary"
+                               style="min-width: 114px;">
+                                <nobr>Пройти тест</nobr>
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'testing:test_dashboard' %}" class="btn btn-outline-primary">Смотреть
+                                    результаты</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <strong class="text-gray-dark">Анкета адаптации</strong>
+                            <span class="d-block mt-2">Оценка адаптации к условиям обучения в Академии МВД</span>
+                        </div>
+
+                        <div>
+                            <a href="{% url 'adaptation:adaptation_add' %}" class="btn btn-outline-primary"
+                               style="min-width: 114px;">
+                                <nobr>Пройти тест</nobr>
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'adaptation:dashboard' %}" class="btn btn-outline-primary">Смотреть
+                                    результаты</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="media text-muted pt-3">
+                <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">
+                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div>
+                            <strong class="text-gray-dark">Шкала Бека(BHI)</strong>
+                            <span class="d-block mt-2">Опросник (20 утверждений)</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'beka_scale:test_add' %}" class="btn btn-outline-primary"
+                               style="min-width: 114px;">
+                                <nobr>Пройти тест</nobr>
+                            </a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'beka_scale:test_dashboard' %}" class="btn btn-outline-primary">Смотреть
+                                    результаты</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
+
+
+
+
+
+
+
+

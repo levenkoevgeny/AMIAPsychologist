@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Анкета</title>
+    {% load widget_tweaks %}
+    {% load static %}
+    <style type="text/css">
+        ul {
+            list-style-type: none;
+        }
+    </style>
+{% endblock %}
+
+{% block nav %}
+    <div class="container-fluid">
+        {% include 'course/nav.html' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% include 'course/input_blocks/errors.html' %}
+        <form class="needs-validation" action="{% url 'course:add' %}" method="post" novalidate>{% csrf_token %}
+            <div class="jumbotron">
+
+                <div class="form-group row">
+                    <label class="col-md-6 col-form-label"><b>АНКЕТА ПЕРВОКУРСНИКА</b></label>
+                    {#                    <div class="col-md-6">#}
+                    {#                        {% render_field form.group class+="form-control" style="width: 300px;" %}#}
+                    {#                    </div>#}
+                </div>
+
+                <div class="form-group">
+                    <label><b>Учебная группа</b></label>
+                    {% render_field form.group class+="form-control" style="width: 300px;" %}
+                </div>
+
+
+                {% include 'course/input_blocks/personal_info.html' %}
+                <br>
+                <div class="divider_main"></div>
+                {% include 'course/input_blocks/education.html' %}
+                <br>
+                <div class="divider_main"></div>
+                {% include 'course/input_blocks/army.html' %}
+                <br>
+                <div class="divider_main"></div>
+                <br>
+                {% include 'course/input_blocks/children.html' %}
+                <br>
+                <div class="divider_main"></div>
+                <br>
+                {% include 'course/input_blocks/family.html' %}
+                <div class="divider_main"></div>
+                <br>
+                {% include 'course/input_blocks/interest.html' %}
+                <br>
+                <div class="divider_main"></div>
+                <br>
+                {% include 'course/input_blocks/diseases.html' %}
+                <br>
+                <div class="divider_main"></div>
+                <br>
+                {% include 'course/input_blocks/qualities.html' %}
+                <br>
+                <div class="divider_main"></div>
+                <br>
+                {% include 'course/input_blocks/activity.html' %}
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить анкету!</button>
+            <br><br>
+        </form>
+
+        <div class="alert alert-warning" role="alert">
+            Конфиденциально. Информация защищена в соответствии с законом Республики Беларусь
+            от 1 июля 2010 г. № 153-З «Об оказании психологической помощи»
+            Заполненный бланк сдавать только психологу.
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'course/js/main.js' %}"></script>
+{#    <script>#}
+{#        $("#id_fio").blur(function () {#}
+{#            window.fio = $(this).val();#}
+{#        }); #}
+{#        $("#id_group").blur(function () {#}
+{#            window.group = $(this).val();#}
+{#        });#}
+{#    </script>#}
+{% endblock %}

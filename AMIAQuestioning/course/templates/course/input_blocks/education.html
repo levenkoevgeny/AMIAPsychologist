@@ -1,0 +1,34 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-12">
+        <br>
+        <label><b>Образование</b></label><br>
+
+        <div class="form-check d-flex form-check-inline align-items-center">
+            <input class="form-check-input education" type="radio" id="id_education_1" name="education"  value="1" checked required >
+            <label class="form-check-label">
+                общее среднее (школа на базе 11 классов, лицей), окончил в
+                {% render_field form.year_of_graduation class+="form-control d-inline-flex p-2 year_input" id="education_1_year_of_graduation" %}
+                году
+            </label>
+        </div>
+        <div class="form-check d-flex align-items-center">
+            <input class="form-check-input education" type="radio" id="id_education_2" name="education"  value="2">
+            <label class="form-check-label">
+                среднее профессиональное (ПТУ, лицей МВД (МЧС), кадетское, Суворовское), окончил в
+                {% render_field form.year_of_graduation|attr:"disabled" class+="form-control d-inline-flex p-2 year_input" id="education_2_year_of_graduation" %}
+                году
+            </label>
+        </div>
+        <div class="form-check d-flex align-items-center">
+            <input class="form-check-input education" type="radio" id="id_education_3" name="education"  value="3">
+            <label class="form-check-label d-flex align-items-center">
+                среднее-специальное (техникум, колледж, лицей), окончил в&nbsp;
+                {% render_field form.year_of_graduation|attr:"disabled" class+="form-control year_input" id="education_3_year_of_graduation" %}&nbsp;
+                году по специальности(впишите ниже):&nbsp;
+            </label>
+        </div>
+        {% render_field form.specialty|attr:"rows:1"|attr:"disabled" class+="form-control mt-2" %}
+    </div>
+</div>

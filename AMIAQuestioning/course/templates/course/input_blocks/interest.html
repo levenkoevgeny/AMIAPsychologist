@@ -1,0 +1,38 @@
+{% load widget_tweaks %}
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Ваши интересы, увлечения, хобби (отметьте)</b></label>
+        {% if form.interest.errors %}
+            {% for error in form.interest.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.interest class+="m-0 p-0" %}
+        {% render_field form.interest_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" %}
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b>За последние 2–3 года, каким видом спорта вы занимались на постоянной основе?</b></label>
+        <br>
+        <div class="form-group">
+            <label>Вид спорта:</label>
+            {% render_field form.kind_of_sport class+="form-control"%}
+        </div>
+
+        <input type="radio" name="sport_level" value="1">&nbsp;на любительском уровне&nbsp;
+        <input type="radio" name="sport_level" value="2">&nbsp;профессионально&nbsp;<br><br>
+        <label>Периодичность (укажите количество занятий в неделю):</label>
+        {% render_field form.periodicity class+="form-control d-inline-flex m-0 p-0" style="width: 150px;" %}<br><br>
+        <div class="form-group">
+            <label>Достижения:</label>
+            {% render_field form.achievements|attr:"rows:1" class+="form-control" %}
+        </div>
+        {% render_field form.not_prof %}&nbsp;<label>На постоянной основе спортом не занимался</label>
+
+    </div>
+</div>

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}<title>Результаты</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% if questioning_list %}
+            <br>
+            <p>Количество найденных анкет - {{ questioning_list.count }}</p>
+            <table class="table table-hover table-bordered table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">1</th>
+                    <th scope="col">2</th>
+                    <th scope="col">3</th>
+                    <th scope="col" colspan="{{ interest_list.count }}">4</th>
+                    <th scope="col" colspan="{{ educational_list.count }}">5</th>
+                    <th scope="col">6</th>
+                    <th scope="col" colspan="{{ educational_place_list.count }}">7</th>
+                    <th scope="col" colspan="{{ live_region_list.count }}">8</th>
+                    <th scope="col">9</th>
+                    <th scope="col">10</th>
+                    <th scope="col" colspan="{{ attend_extra_list.count }}">11</th>
+                    <th scope="col" colspan="{{ important_for_list.count }}">12</th>
+                    <th scope="col" colspan="{{ important_for_spec_list.count }}">13</th>
+                    <th scope="col" colspan="{{ got_information_from_list.count }}">14</th>
+                    <th scope="col" colspan="{{ decision_list.count }}">15</th>
+                    <th scope="col" colspan="{{ let_you_list.count }}">16</th>
+                    <th scope="col" colspan="{{ difficulty_list.count }}">17</th>
+                    <th scope="col" colspan="{{ get_education_list.count }}">18</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in questioning_list %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td scope="col">{{ item.sex }}</td>
+                        <td scope="col">{{ item.year_of_birth }}</td>
+                        <td scope="col">{{ item.year_count }}</td>
+                        {% for interest in interest_list %}
+                            <td scope="col">{% if item.in_the_interests_of == interest %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for edu in educational_list %}
+                            <td scope="col">{% if item.graduate == edu %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        <td scope="col">{{ item.is_law_orientation }}</td>
+                        {% for place in educational_place_list %}
+                            <td scope="col">{% if item.place_of_last_education == place %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for region in live_region_list %}
+                            <td scope="col">{% if item.live_region == region %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        <td scope="col">{{ item.average_mark }}</td>
+                        <td scope="col">{% if item.mark_sum %}{{ item.mark_sum }}{% else %}-{% endif %}</td>
+                        {% for attend in attend_extra_list %}
+                            <td scope="col">{% if attend in item.attend_extra.all %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for imp_for in important_for_list %}
+                            <td scope="col">{% if imp_for in item.important_for.all %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for imp_for_spec in important_for_spec_list %}
+                            <td scope="col">{% if imp_for_spec in item.important_for_spec.all %}1{% else %}
+                                0{% endif %}</td>
+                        {% endfor %}
+                        {% for got_information in got_information_from_list %}
+                            <td scope="col">{% if got_information in item.got_information_from.all %}1{% else %}
+                                0{% endif %}</td>
+                        {% endfor %}
+                        {% for decision in decision_list %}
+                            <td scope="col">{% if item.decision == decision %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for let in let_you_list %}
+                            <td scope="col">{% if let in item.let_you.all %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for difficulty in difficulty_list %}
+                            <td scope="col">{% if item.difficulty == difficulty %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                        {% for get_edu in get_education_list %}
+                            <td scope="col">{% if item.get_education == get_edu %}1{% else %}0{% endif %}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <br>
+            Записей не найдено
+        {% endif %}
+    </div>
+{% endblock %}

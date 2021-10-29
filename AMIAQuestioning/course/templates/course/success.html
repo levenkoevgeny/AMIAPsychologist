@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    <title>Анкета</title>
+{% endblock %}
+
+{% block nav %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="jumbotron">
+            <h1 class="display-4">Отлично! Ваши результаты приняты!</h1>
+            <h4>Ожидайте следующего задания!</h4>
+            <hr class="my-4">
+        </div>
+    </div>
+    <br>
+    <h1 id="user_countdown" class="text-center"></h1>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'big_test/js/countdown.js' %}"></script>
+{% endblock %}

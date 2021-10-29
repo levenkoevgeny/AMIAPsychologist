@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'main/css/bs5/bootstrap.min.css' %}">
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">#}
+    <link rel="shortcut icon" href="{% static 'questioning/img/favicon.ico' %}" />
+    <title>Анкета</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    {% include 'course/nav.html' %}
+</div>
+
+<div class="container">
+    <br>
+    <h5 class="d-flex justify-content-center">Шкала Бека</h5><br>
+    <p class="card-text" align="justify">
+        ИНСТРУКЦИЯ: ниже приводится 20 утверждений о Вашем будущем. Выберите только один ответ, наиболее точно отражающий Ваши чувства в настоящее время.
+        Среди утверждений нет правильных или неправильных. Не тратьте слишком много времени на раздумья. Отвечайте честно (даже если вам не нравится ответ).
+    </p>
+
+    <br>
+    <form action="{% url 'beka_scale:test_add' %}" method="POST" class="needs-validation" id="test_form" novalidate>{% csrf_token %}
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <label class="form-label">Ф.И.О</label>
+                    <input type="text" class="form-control shadow-lg bg-white rounded" name="fio" placeholder="Например: Иванов Иван Иванович" required>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Группа</label>
+                    <input type="text" class="form-control shadow-lg bg-white rounded" name="group" required>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="mb-3">
+                    <label class="form-label">Должность</label>
+                    <select class="form-select shadow-lg bg-white rounded" name="position">
+                        {% for position in position_list %}
+                            <option value="{{ position.id }}">{{ position.position }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {% for question in question_list %}
+            <div class="card shadow-lg bg-white rounded" style="width: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ question.question_text }}</h5>
+                    <p class="card-text">
+                    <div class="form-check">
+                        <input class="form-check-input mx-2" type="radio" name="question_{{ question.id }}_radio" value="1" required>
+                        <label class="form-check-label">Полностью не согласны</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input mx-2" type="radio" name="question_{{ question.id }}_radio" value="2" required>
+                        <label class="form-check-label">Не согласны</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input mx-2" type="radio" name="question_{{ question.id }}_radio" value="3" required>
+                        <label class="form-check-label">Скорее согласны</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input mx-2" type="radio" name="question_{{ question.id }}_radio" value="4" required>
+                        <label class="form-check-label">Полностью согласны</label>
+                    </div>
+                    </p>
+                </div>
+            </div>
+            <br>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Отправить</button>
+        <div style="height: 30px;"></div>
+    </form>
+</div>
+
+{#<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>#}
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>#}
+<script src="{% static 'main/js/JQueryLocal.js' %}"></script>
+<script src="{% static 'main/js/bs5/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'big_test/js/main.js' %}"></script>
+<script>(function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+</script>
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Индивидуальные работы</title>
+    {% load widget_tweaks %}
+    {% load static %}
+{% endblock %}
+
+{% block nav %}
+    <div class="container-fluid">
+        {% include 'course/nav.html' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="mt-4"></div>
+        {% if request.user.is_superuser %}
+            <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+                <form action="{% url 'personalwork:work_list' %}" method="GET">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Фамилия</label>
+                            {% render_field filter.form.lastname class+="form-control" style="width: 100%" %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Группа</label>
+                            {% render_field filter.form.subdivision class+="form-control my-select2" style="width: 100%" %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Звание</label>
+                            {% render_field filter.form.rank class+="form-control my-select2" style="width: 100%" %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Дата с</label>
+                            {% render_field filter.form.work_date_start class+="form-control" style="width: 100%" %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Дата по</label>
+                            {% render_field filter.form.work_date_end class+="form-control" style="width: 100%" %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Вид работы</label>
+                            {% render_field filter.form.work_kind class+="form-control my-select2" style="width: 100%" %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Запрос</label>
+                            {% render_field filter.form.work_request class+="form-control my-select2" style="width: 100%" %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Проведенная работа</label>
+                            {% render_field filter.form.work_done class+="form-control my-select2" style="width: 100%" %}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Исполнитель</label>
+                            {% render_field filter.form.executor class+="form-control my-select2" style="width: 100%" %}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3" type="submit">Поиск</button>
+                    <a class="btn btn-primary mt-3" href="{% url 'personalwork:work_list' %}">Сбросить фильтр</a>
+                </form>
+            </div>
+        {% endif %}
+        <div class="d-flex justify-content-end my-3">
+            <a class="btn btn-primary" href="{% url 'personalwork:work_input' %}">Новая запись</a>
+        </div>
+
+        {% if works_list %}
+            <h5 class="my-3">Всего записей - {{ works_list.count }}</h5>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" class="table-primary align-middle text-center">№ п.п</th>
+                    <th scope="col" class="table-primary align-middle text-center">Дата</th>
+                    <th scope="col" class="table-primary align-middle text-center">Звание</th>
+                    <th scope="col" class="table-primary align-middle text-center">Фамилия и инициалы</th>
+                    <th scope="col" class="table-primary align-middle text-center">Подразделение</th>
+                    <th scope="col" class="table-primary align-middle text-center">Вид работы</th>
+                    <th scope="col" class="table-primary align-middle text-center">Запрос</th>
+                    <th scope="col" class="table-primary align-middle text-center">Основание и проведенная работа</th>
+                    <th scope="col" class="table-primary align-middle text-center">Выводы</th>
+                    <th scope="col" class="table-primary align-middle text-center">Рекомендации</th>
+                    {% if request.user.is_superuser %}
+                        <th scope="col" class="table-primary align-middle text-center">Исполнитель</th>
+                        <th scope="col" class="table-primary align-middle text-center">Дата создания записи</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for work in works_list %}
+                    <tr>
+                        <td class="align-middle text-center">{{ forloop.counter }}</td>
+                        <td class="align-middle text-center">{{ work.work_date|date:"d.m.Y" }}</td>
+                        <td class="align-middle text-center">{{ work.rank }}</td>
+                        <td class="align-middle text-center">
+                            <nobr><a class="link-secondary"
+                                     href="{% url 'personalwork:work_update' work.id %}">{{ work.lastname }}</a></nobr>
+                        </td>
+                        <td class="align-middle text-center">{{ work.subdivision }}</td>
+                        <td class="align-middle text-center">{{ work.work_kind }}</td>
+                        <td class="align-middle text-center">{{ work.work_request }}</td>
+                        <td class="align-middle text-center">{{ work.work_done }}</td>
+                        <td class="align-middle text-center">{{ work.conclusion }}</td>
+                        <td class="align-middle text-center">{{ work.recommendations }}</td>
+                        {% if request.user.is_superuser %}
+                            <td class="align-middle text-center">{{ work.executor.last_name }} {{ work.executor.first_name }}</td>
+                            <td class="align-middle text-center">{{ work.add_date_time|date:"d.m.Y H:m" }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="container">
+                <h5>Список пуст!</h5>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

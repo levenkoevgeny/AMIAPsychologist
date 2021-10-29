@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filter_tags_big %}
+
+{% block title %}<title>Анкета</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <br>
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">Тест завершен</h5>
+                <p class="card-text">Благодарим за участие!</p>
+                {#            <a href="/graduate" class="stretched-link">Home</a>#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $( document ).ready(function() {
+            setTimeout(() => window.location.href = '/big_test', 3000);
+        });
+    </script>
+{% endblock %}

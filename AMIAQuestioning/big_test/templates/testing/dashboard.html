@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filter_tags_big %}
+
+{% block title %}<title>Результаты</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">№ п/п</th>
+            <th scope="col">ФИО</th>
+            <th scope="col">Группа</th>
+            <th scope="col">Дата рождения</th>
+            <th scope="col">Дата заполнения</th>
+            {% for question in question_list %}
+                <th scope="col">{{ question.question_number }}</th>
+            {% endfor %}
+            <th scope="col">Время прохождения теста (сек.)</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for questionary in questionary_list %}
+            <tr>
+                <th scope="col">{{ forloop.counter }}</th>
+                <th scope="col">{{ questionary.fio }}</th>
+                <th scope="col">{{ questionary.group }}</th>
+                <th scope="col"><nobr>{{ questionary.date_of_birth }}</nobr></th>
+                <th scope="col">{{ questionary.date_of_fill|date:'Y-m-d' }}</th>
+                {% for result in result_list|results_big:questionary.id %}
+                    <th scope="col">{{ result.answer }}</th>
+                {% endfor %}
+                <th scope="col">{{ questionary.timer }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

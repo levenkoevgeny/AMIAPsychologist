@@ -1,0 +1,75 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Отметьте свои особенности, которых вы стесняетесь, которые вас беспокоят:</b></label>
+        {% if form.particular_qualities.errors %}
+            {% for error in form.particular_qualities.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.particular_qualities class+="m-0 p-0" %}
+        {% render_field form.particular_qualities_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" %}<br>
+    </div>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Кто-либо из ваших близких родственников (родные отец, мать, бабушки, дедушки, тети, дяди)</b></label>
+        {% if form.relatives_record.errors %}
+            {% for error in form.relatives_record.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% render_field form.relatives_record class+="m-0 p-0" %}
+        {% render_field form.relatives_record_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" %}
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Как вы оцениваете (субъективное восприятие) материальную обеспеченность Вашей семьи:</b></label>
+        <br>
+        {% render_field form.level_of_wealth class+="m-0 p-0"  %}
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th colspan="4">ЖИЛИЩНО-БЫТОВЫЕ УСЛОВИЯ ПРОЖИВАНИЯ (до поступления)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="width: 25%">Жилое помещение</td>
+        <td style="width: 25%">Число жилых комнат</td>
+        <td style="width: 25%">Количество проживающих людей (включая Вас)</td>
+        <td style="width: 25%">Имеется ли у Вас отдельная комната?</td>
+    </tr>
+    <tr>
+        <td>
+            {% render_field form.living_conditions_premises class+="m-0 p-0" %}
+            {% render_field form.living_conditions_premises_other|attr:"disabled" class+="form-control d-inline-flex p-2" %}
+        </td>
+        <td>
+            {% render_field form.living_conditions_room_count class+="" %}
+        </td>
+        <td>
+            {% render_field form.living_conditions_people_count class+="" %}
+        </td>
+        <td>
+            {% render_field form.is_own_room class+="" %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filter_tags_big %}
+
+{% block title %}<title>Результаты</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+    <br>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">№ п/п</th>
+            <th scope="col">ФИО</th>
+            <th scope="col">Группа</th>
+            <th scope="col">Дата заполнения</th>
+            <th scope="col">1. Свое физическое самочувствие оцениваю как</th>
+            <th scope="col">2. Мне сложно сосредоточиться</th>
+            <th scope="col">3. Я хорошо запоминаю информацию</th>
+            <th scope="col">4. Мне труднее сконцентрироваться, чет большинству курсантов, с которыми я вместе обучаюсь</th>
+            <th scope="col">5. В последнее время, мой сон преимущественно...</th>
+            <th scope="col">6. В последнее время, как правило, я...</th>
+            <th scope="col">7. По утрам чувствую, что выспался и отдохнул</th>
+            <th scope="col">8. В дневное время суток чувствую сонливость</th>
+            <th scope="col">9. Из-за переживаний и волнений головная боль случается</th>
+            <th scope="col">10. Как правило у меня (апетит)</th>
+            <th scope="col">11. Отмечаете ли Вы у себя быструю утомляемость</th>
+            <th scope="col">12. Что Вы можете сказать о Вашей учебной группе</th>
+            <th scope="col">13. Как часто в Вашей учебной группе происходят межличностные конфликты?</th>
+            <th scope="col">14. На данный момент, есть ли у Вас значимые неразрешенные конфликты</th>
+            <th scope="col">15. Какой из конфликтов, вы бы переживали дольше всего</th>
+            <th scope="col">16. Как Вы оцениваете психологический климам в Вашей группе</th>
+            <th scope="col">17. Удовлетворены ли Вы взаимоотношениями в коллективе</th>
+            <th scope="col">18. Удовлетворены ли Вы сплоченностью Вашего коллектива</th>
+            <th scope="col">19. У меня складывается впечатление, что в группе не понимают</th>
+            <th scope="col">20. Мое мнение не совпадает с мнением одногруппников</th>
+            <th scope="col">21. Окружающие особенно часто поступают несправедливо</th>
+            <th scope="col">22. Есть ли в группе люди, с которыми у Вас натянутые отношения</th>
+            <th scope="col">23. Как бы вы оценили свою принадлежность к группе</th>
+            <th scope="col">24. Самое безопасное для меня - никому не доверять</th>
+            <th scope="col">25. Отношение руководства нуждается в улучшении</th>
+            <th scope="col">26. Средний балл по итогам первой сессии</th>
+            <th scope="col">27. Возникают ли у Вас трудности в учебе</th>
+            <th scope="col">28. Усвоение мариала у меня медленнее</th>
+            <th scope="col">29. Удовлетворены ли Вы нагрузками в учебе</th>
+            <th scope="col">30. Как бы Вы оценили свою учебную нагрузку</th>
+            <th scope="col">31. Интересно ли Вам обучаться в Академии МВД</th>
+            <th scope="col">32. Удовлетворены ли Вы тем как проходит Ваше обучение</th>
+            <th scope="col">33. Как Вы думаете, большинство одногруппников довольны обучением больше, чем Вы</th>
+            <th scope="col">34. Посоветовали бы Вы своим знакомым поступать в Академию МВД</th>
+            <th scope="col">35. Оправдались ли Ваши ожидания по поводу обучения в Академии МВД</th>
+            <th scope="col">36. На сколько оправдались Ваши ожидания в отношении обучения в Академии МВД</th>
+            <th scope="col">37. Ваше личное мнение об обучении в Академии МВД на момент КМБ</th>
+            <th scope="col">38. Ваше личное мнение об обучении в Академии МВД на данный момент</th>
+            <th scope="col">39. Задумывались ли Вы об уходе</th>
+            <th scope="col">40. Мысли - курсантская жизнь не кажется такой интересной</th>
+            <th scope="col">41. Ощущаю, что жизнь проходит мимо меня</th>
+            <th scope="col">42. Есть ли у Вас планы отчислиться из Академии МВД</th>
+            <th scope="col">43. Как правило, время в Академии МВД для меня протекает</th>
+            <th scope="col">44. Бывали ли истерика или нервный срыв</th>
+            <th scope="col">45. Бывают ли у Вас без видимой причины спады и подъемы настроения</th>
+            <th scope="col">46. С каким настроением Вы обычно посещаете учебные занятия</th>
+            <th scope="col">47. Беспокоят ли Вас мысли о разлуке с родными и близкими</th>
+            <th scope="col">48. Как поступаете, когда сталкиваетесь с трудностями в процессе обучения</th>
+            <th scope="col">49. Как проходит Ваша адаптация к бытовым условиям</th>
+            <th scope="col">50. На предложенные вопосы Вы отвечали</th>
+            <th scope="col" colspan="{{ tensions_list.count }}">51. Что вызывает у Вас наибольшее напряжение, неудовлетворенность</th>
+            <th scope="col">51_1. Что вызывает у Вас наибольшее напряжение, неудовлетворенность (иное)</th>
+            <th scope="col">52.1 Свое будущее в Академии МВД я представляю</th>
+            <th scope="col">52.2 Знаю, что глупо, но боюсь</th>
+            <th scope="col">52.3 Сомневаюсь в том, что</th>
+            <th scope="col">52.4 Больше всего меня возмущает</th>
+            <th scope="col">52.5 Мое представление о выбранной профессии</th>
+            <th scope="col">52.6 Подчинение приказам для меня</th>
+            <th scope="col">52.7 Мой жизненный девиз звучит так</th>
+            <th scope="col">52.8 Если все против меня, то</th>
+            <th scope="col">53. Ваши идеи и предположения по улучшению процесса</th>
+            <th scope="col">54. Необходима ли Вам беседа с психологом</th>
+            <th scope="col">54.1 Тема беседы с психологом</th>
+            <th scope="col">Время прохождения теста (сек.)</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in dashboard_list %}
+            <tr>
+                <th scope="col">{{ forloop.counter }}</th>
+                <th scope="col">{{ item.fio }}</th>
+                <th scope="col">{{ item.group }}</th>
+                <th scope="col">{{ item.date_added }}</th>
+                <th scope="col">{{ item.physical_well_being }}</th>
+                <th scope="col">{{ item.hard_to_concentrate }}</th>
+                <th scope="col">{{ item.remember_information }}</th>
+                <th scope="col">{{ item.more_hard_to_concentrate }}</th>
+                <th scope="col">{{ item.sleep }}</th>
+                <th scope="col">{{ item.sleep_last_time }}</th>
+                <th scope="col">{{ item.sleep_morning }}</th>
+                <th scope="col">{{ item.sleep_in_daytime }}</th>
+                <th scope="col">{{ item.headache }}</th>
+                <th scope="col">{{ item.appetite_as_a_rule }}</th>
+                <th scope="col">{{ item.fast_fatiguability }}</th>
+                <th scope="col">{{ item.tell_about_the_study_group }}</th>
+                <th scope="col">{{ item.conflicts_in_group }}</th>
+                <th scope="col">{{ item.significant_unresolved_issues }}</th>
+                <th scope="col">{{ item.go_through_a_conflict }}</th>
+                <th scope="col">{{ item.climate_in_group }}</th>
+                <th scope="col">{{ item.satisfied_with_the_relationship }}</th>
+                <th scope="col">{{ item.team_cohesion }}</th>
+                <th scope="col">{{ item.impression_of_not_understanding }}</th>
+                <th scope="col">{{ item.opinion_does_not_match }}</th>
+                <th scope="col">{{ item.others_do_not_fair }}</th>
+                <th scope="col">{{ item.strained_relationship }}</th>
+                <th scope="col">{{ item.group_membership }}</th>
+                <th scope="col">{{ item.safe_trust_no_one }}</th>
+                <th scope="col">{{ item.attitude_needs_improvement }}</th>
+                <th scope="col">{{ item.average_score }}</th>
+                <th scope="col">{{ item.learning_difficulties }}</th>
+                <th scope="col">{{ item.assimilation_of_material }}</th>
+                <th scope="col">{{ item.study_load_satisfaction }}</th>
+                <th scope="col">{{ item.study_load_appraisal }}</th>
+                <th scope="col">{{ item.is_it_interesting_to_study }}</th>
+                <th scope="col">{{ item.satisfied_with_the_training }}</th>
+                <th scope="col">{{ item.satisfied_with_the_training_group }}</th>
+                <th scope="col">{{ item.would_advise }}</th>
+                <th scope="col">{{ item.were_the_expectations_met }}</th>
+                <th scope="col">{{ item.how_much_were_the_expectations_met }}</th>
+                <th scope="col">{{ item.first_opinion }}</th>
+                <th scope="col">{{ item.current_opinion }}</th>
+                <th scope="col">{{ item.thought_about_dismissal }}</th>
+                <th scope="col">{{ item.thoughts_about_not_interesting_life }}</th>
+                <th scope="col">{{ item.thoughts_life_is_passing_by }}</th>
+                <th scope="col">{{ item.there_are_plans_to_deduct }}</th>
+                <th scope="col">{{ item.time_passes_as_a_rule }}</th>
+                <th scope="col">{{ item.hysterics_or_nervous_breakdown }}</th>
+                <th scope="col">{{ item.recession_and_rise_in_mood }}</th>
+                <th scope="col">{{ item.mood_in_the_classroom }}</th>
+                <th scope="col">{{ item.thoughts_of_separation }}</th>
+                <th scope="col">{{ item.learning_difficulties_how }}</th>
+                <th scope="col">{{ item.how_is_adaptation_going }}</th>
+                <th scope="col">{{ item.you_answered }}</th>
+                {% for tens in item.get_tensions %}
+                    <th scope="col">
+                        {{ tens }}
+                    </th>{% endfor %}
+                <th scope="col">{{ item.tension_other }}</th>
+                <th scope="col">{{ item.the_future_i_imagine }}</th>
+                <th scope="col">{{ item.i_know_it_is_stupid_but_afraid }}</th>
+                <th scope="col">{{ item.i_doubt_that }}</th>
+                <th scope="col">{{ item.most_outrages_me }}</th>
+                <th scope="col">{{ item.idea_of_the_chosen_profession }}</th>
+                <th scope="col">{{ item.obeying_orders }}</th>
+                <th scope="col">{{ item.life_motto }}</th>
+                <th scope="col">{{ item.if_everyone_is_against_me }}</th>
+                <th scope="col">{{ item.ideas_and_assumptions }}</th>
+                <th scope="col">{{ item.need_a_conversation }}</th>
+                <th scope="col">{{ item.need_a_conversation_theme }}</th>
+                <th scope="col">{{ item.timer }}</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

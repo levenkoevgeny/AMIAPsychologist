@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Анкета</title>
+    {% load widget_tweaks %}
+    {% load static %}
+    <style type="text/css">
+        ul {
+            list-style-type: none;
+        }
+    </style>
+{% endblock %}
+
+
+{% block nav %}
+    <div class="container-fluid">
+    {% include 'course/nav.html' %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <br>
+
+        {% for error in form.non_field_errors %}
+            <b>{{ field.label }} {{ error }}</b><br>
+        {% endfor %}
+
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger m-0 p-0" role="alert">
+                        {{ field.label }} - {{ error }}<br>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        <br>
+
+        {% if not form %}
+            <div class="alert alert-danger" role="alert">
+                <b>Исправте ошибки в анкете (помечены красным цветом) и повторно отправте анкету!</b>
+            </div>
+        {% endif %}
+
+        <div class="alert alert-primary d-flex justify-content-center">
+            <h5><p class="d-flex justify-content-center m-0 p-0">Анонимная анкета</p>
+                <p class="d-flex justify-content-center m-0 p-0" style="text-align: justify;">изучения предпочтений профессионального выбора абитуриента</p></h5>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <h6><p class="d-flex justify-content-center m-0 p-0">Уважаемый абитуриент!</p>
+                <p class="m-0 p-0" style="text-indent: 2em; text-align: justify;">Просим Вас высказать свое мнение по ряду вопросов, для этого отметьте один или несколько вариантов
+                    ответов, либо напишите свой вариант ответа.</p>
+                <p class="m-0 p-0" style="text-indent: 2em; text-align: justify;">Анкету заполняйте самостоятельно, без участия посторонних.</p></h6>
+        </div>
+
+        <br>
+
+        <form action="{% url 'questioning:add' %}" method="post">{% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><b>1. Ваш пол:</b></label>
+                        {% if form.sex.errors %}
+                            {% for error in form.sex.errors %}
+                                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% render_field form.sex class+="m-0 pl-5" %}
+
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><b>2. Год рождения (пример - 1998):</b></label>
+                        {% if form.year_of_birth.errors %}
+                            {% for error in form.year_of_birth.errors %}
+                                <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% render_field form.year_of_birth class+="form-control" min="1970" max="2020" placeholder="1998" %}
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><b>3. Полных лет</b></label>
+                        {% if form.year_count.errors %}
+                            {% for error in form.year_count.errors %}
+                                <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% render_field form.year_count class+="form-control" min="10" max="70" %}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><b>4. На учебу в Академию Вы направляетесь в интересах:</b> (если Вы поступите и закончите обучение в Академии МВД,
+                    то где Вы будете проходить службу?):</label>
+                {% if form.in_the_interests_of.errors %}
+                    {% for error in form.in_the_interests_of.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b><br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.in_the_interests_of class+="m-0 pl-5" %}
+                {% render_field form.in_the_interests_of_other class+="form-control ml-5" style="width:80%;" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>5. Какое учебное заведение вы заканчивали?:</b></label>
+                {% if form.graduate.errors %}
+                    {% for error in form.graduate.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.graduate class+="m-0 pl-5" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>6. Обучались ли Вы в классе правовой направленности?</b></label>
+                {% if form.is_law_orientation.errors %}
+                    {% for error in form.is_law_orientation.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.is_law_orientation class+="m-0 pl-5" %}
+            </div>
+
+
+            <div class="form-group">
+                <label><b>7. Последнее учебное заведение, которое Вы оканчивали, находится в:</b></label>
+                {% if form.place_of_last_education.errors %}
+                    {% for error in form.place_of_last_education.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.place_of_last_education class+="m-0 pl-5" %}
+            </div>
+
+
+            <div class="form-group">
+
+                <label><b>8. Область в которой Вы фактически проживаете:</b></label>
+                {% if form.live_region.errors %}
+                    {% for error in form.live_region.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.live_region class+="m-0 pl-5" %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><b>9. Средний балл по аттестату, диплому (пример - 8,8)</b></label>
+                        {% if form.average_mark.errors %}
+                            {% for error in form.average_mark.errors %}
+                                <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% render_field form.average_mark class+="form-control" min="0" max="10" step="0.1" placeholder="8,8" %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><b>10. Сумма баллов по ЦТ (если сдавали)</b></label>
+                        {% if form.mark_sum.errors %}
+                            {% for error in form.mark_sum.errors %}
+                                <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                                    <b>{{ error }}</b>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% render_field form.mark_sum class+="form-control" min="0" max="300" %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label><b>11. Перед поступлением в Академию МВД Вы дополнительно посещали</b> (возможно несколько вариантов ответов):</label>
+                {% if form.attend_extra.errors %}
+                    {% for error in form.attend_extra.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.attend_extra class+="m-0 pl-5" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>12. При выборе высшего учебного заведения для меня важно</b> (возможно несколько вариантов ответов):</label>
+                {% if form.important_for.errors %}
+                    {% for error in form.important_for.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.important_for class+="m-0 pl-5" %}
+                {% render_field form.important_for_other class+="form-control ml-5" style="width:80%;" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>13. Мне важно поступить и обучаться по специальности:</b></label>
+                {% if form.important_for_spec.errors %}
+                    {% for error in form.important_for_spec.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.important_for_spec class+="m-0 pl-5" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>14. Информацию о поступлении в Академию МВД Вы получили</b> (возможно несколько вариантов ответов):</label>
+                {% if form.got_information_from.errors %}
+                    {% for error in form.got_information_from.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.got_information_from class+="m-0 pl-5" %}
+                {% render_field form.got_information_from_other class+="form-control ml-5" style="width:80%;" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>15. Решение о поступлении на обучение в Академию МВД было принято:</b></label>
+                {% if form.decision.errors %}
+                    {% for error in form.decision.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.decision class+="m-0 pl-5" %}
+                {% render_field form.decision_other class+="form-control ml-5" style="width:80%;" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>16. В случае если Вы успешно пройдете конкурс, и будете обучаться в Академии МВД, это позволит Вам</b> (возможно несколько вариантов ответов):</label>
+                {% if form.let_you.errors %}
+                    {% for error in form.let_you.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.let_you class+="m-0 pl-5" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>17. При оформлении личного дела, основной трудностью для меня было:</b></label>
+                {% if form.difficulty.errors %}
+                    {% for error in form.difficulty.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.difficulty class+="m-0 pl-5" %}
+            </div>
+
+            <div class="form-group">
+                <label><b>18. При обучении в Академии МВД, получение какого высшего образования для Вас важно:</b></label>
+                {% if form.get_education.errors %}
+                    {% for error in form.get_education.errors %}
+                        <div class="alert alert-danger m-0 p-0" style="display: inline-block;" role="alert">
+                            <b>{{ error }}</b>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% render_field form.get_education class+="m-0 pl-5" %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Отправить анкету</button>
+        </form>
+    </div>
+    <br>
+{% endblock %}

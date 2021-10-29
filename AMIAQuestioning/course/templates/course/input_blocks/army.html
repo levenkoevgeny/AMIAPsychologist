@@ -1,0 +1,35 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-12">
+        <br>
+        <label><b>Служба в армии</b></label>
+        <div class="form-check d-flex align-items-center">
+            <input class="form-check-input military" type="radio" id="id_military_1" name="military"  value="1" required checked>
+            <label class="form-check-label" for="exampleRadios1">не служил</label>
+        </div>
+        <div class="form-check d-flex align-items-center">
+            <input class="form-check-input military" type="radio" id="id_military_2" name="military"  value="2">
+            <label class="form-check-label" for="exampleRadios1">служил с
+                {% render_field form.military_year_since|attr:"disabled" class+="form-control d-inline-flex p-2 year_input" %}
+                года по
+                {% render_field form.military_year_till|attr:"disabled" class+="form-control d-inline-flex p-2 year_input" %}
+            </label>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Место службы</b></label>
+            {% render_field form.military_place|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Род войск</b></label>
+            {% render_field form.type_of_army|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2" %}
+        </div>
+    </div>
+</div>

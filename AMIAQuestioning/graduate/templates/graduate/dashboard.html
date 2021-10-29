@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}<title>Результаты</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+<br>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">№</th>
+            <th scope="col">ФИО</th>
+            <th scope="col">Звание</th>
+            <th scope="col">Группа</th>
+            <th scope="col">Должность</th>
+            <th scope="col">Семейное положение</th>
+            <th scope="col">Имеются ли дети</th>
+            <th scope="col">Сведения о родителях</th>
+            <th scope="col">Отец, отчим</th>
+            <th scope="col">Мать, мачеха</th>
+            <th scope="col">Братья, сестры</th>
+            <th scope="col">Вид спорта</th>
+            <th scope="col">Уровень спорта</th>
+            <th scope="col">Периодичность занятий</th>
+            <th scope="col">Достижения в спорте</th>
+            <th scope="col">Интересы</th>
+            <th scope="col">Удовлетворенность обучением</th>
+            <th scope="col">Оправдания ожиданий</th>
+            <th scope="col">Изменения характера</th>
+            <th scope="col">Сформировались качества</th>
+            <th scope="col">Посоветовали бы поступать</th>
+            <th scope="col">После окончания намерен</th>
+            <th scope="col">Что может побудить уволиться</th>
+            <th scope="col">Что может побудить уволиться (иное)</th>
+            <th scope="col">Что удерживает продолжать службу</th>
+            <th scope="col">Что удерживает продолжать службу (иное)</th>
+            <th scope="col">Как повлияли преподаватели</th>
+            <th scope="col">Как повлияли преподаватели (поясните)</th>
+            <th scope="col">Как повлияли курсовые</th>
+            <th scope="col">Как повлияли курсовые (поясните)</th>
+            <th scope="col">Необходима ли беседа</th>
+            <th scope="col">Тема беседы</th>
+            <th scope="col">Для получения психологической помощи могу обратиться</th>
+            <th scope="col">Дата и время заполнения теста</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ result.fio }}</td>
+                <td>{{ result.rank }}</td>
+                <td>{{ result.group }}</td>
+                <td>{{ result.position }}</td>
+                <td>{{ result.get_marital_status }}</td>
+                <td>{{ result.get_has_children }}</td>
+                <td>{{ result.get_parents_data }}</td>
+                <td>{{ result.father_stepfather }}</td>
+                <td>{{ result.mother_stepmother }}</td>
+                <td>{{ result.siblings }}</td>
+                <td>{{ result.sport_kind|default:"Нет данных" }}</td>
+                <td>{{ result.get_sport_level }}</td>
+                <td>{{ result.get_sport_period }}</td>
+                <td>{{ result.get_sport_achievements }}</td>
+                <td>{{ result.interest }}</td>
+                <td>{{ result.is_satisfied_with_the_training }}</td>
+                <td>{{ result.expectations }}</td>
+                <td>{{ result.character_change }}</td>
+                <td>{{ result.traits_formed }}</td>
+                <td>{{ result.get_would_advise }}</td>
+                <td>{{ result.after_graduating }}</td>
+                <td>{% for quit in result.what_induce_to_quit.all %}
+                    {{ quit }},
+                {% endfor %}
+                </td>
+                <td>{{ result.what_induce_to_quit_other|default:'' }}</td>
+                <td>{% for keeps in result.what_keeps.all %}
+                    {{ keeps }},
+                {% endfor %}
+                </td>
+                <td>{{ result.what_keeps_other|default:'' }}</td>
+                <td>{{ result.how_did_teachers_influence }}</td>
+                <td>{{ result.how_did_teachers_influence_explain|default:'' }}</td>
+                <td>{{ result.how_did_leaders_influence }}</td>
+                <td>{{ result.how_did_leaders_influence_explain|default:'' }}</td>
+                <td>{{ result.get_need_conversation }}</td>
+                <td>{{ result.need_conversation_theme|default:'' }}</td>
+                <td>
+                    {% for i_inform in result.i_inform.all %}
+                        {{ i_inform }},
+                    {% endfor %}
+                </td>
+                <td>{{ result.fill_date_time }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

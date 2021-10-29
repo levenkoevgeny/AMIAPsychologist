@@ -1,0 +1,47 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>ФИО</b></label>
+            <small>(Например: Иванов Иван Иванович)</small>
+            {% render_field form.fio class+="form-control" %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Ваш порядковый № (указан на стартовой жилетке)</b></label>
+            {% render_field form.index_number class+="form-control" %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Национальность</b></label>
+            {% render_field form.nationality class+="form-control" %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Вероисповедание</b></label>
+            {% render_field form.religion class+="form-control" %}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Дата рождения</b></label>
+            {% render_field form.date_of_birth class+="form-control" %}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label><b>Место рождения</b></label>
+            {% render_field form.birth_place|attr:"rows:1" class+="form-control" %}
+            <small>(пример: д. Иваново, Докшицкий р-н, Витебская обл.)</small>
+        </div>
+    </div>
+</div>

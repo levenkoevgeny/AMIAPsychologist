@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Имеются ли у Вас хронические заболевания?</b></label>
+        {% render_field form.is_chronic_diseases class+="m-0 p-0" %}
+        {% render_field form.chronic_diseases|attr:"disabled"|attr:"rows:1" class+="form-control d-inline-flex p-2" %}
+    </div>
+    <br><br> <br><br> <br>
+    <div class="col-md-12">
+        <label><b>Были ли у вас ранения, травмы, переломы, контузии?</b></label>
+        {% render_field form.is_injury class+="m-0 p-0" %}
+        {% render_field form.injury|attr:"disabled"|attr:"rows:1" class+="form-control d-inline-flex p-2" %}
+    </div>
+
+
+</div>

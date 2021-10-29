@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}<title>Результаты</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" id="main-div" style="height: 90%;">
+        <br>
+        <div>РЕЗУЛЬТАТ</div>
+        {% for item in qs_set %}
+            <a href="{% url 'questioning:dashboard' %}?time_added__year={{ item }}">{{ item }}</a><br>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('a').click(function () {
+            $('#main-div').addClass('d-flex justify-content-center align-items-center');
+            $('#main-div').html('<div><div class="spinner-border text-primary" role="status" style="width: 7rem;height: 7rem;"><span class="sr-only">Loading...</span></div></div>');
+        });
+    </script>
+{% endblock %}
+
+
+

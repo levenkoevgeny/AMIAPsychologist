@@ -1,0 +1,31 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-6">
+        <label><b>Семейное положение</b></label>
+        {% render_field form.family_status class+="m-0 p-0" %}
+    </div>
+    <div class="col-md-6">
+        <label><b>Ранее в браке</b></label>
+        <div class="form-check d-flex align-items-center">
+            <input class="form-check-input marriage" type="radio" id="id_marriage_1" name="marriage"  value="1" required checked>
+            <label class="form-check-label">не состоял</label>
+        </div>
+        <div class="form-check d-flex align-items-center">
+            <input class="form-check-input marriage" type="radio" id="id_marriage_2" name="marriage"  value="2">
+            <label class="form-check-label">состоял с
+                {% render_field form.marriage_year_since|attr:"disabled" class+="form-control d-inline-flex p-2 year_input" %}
+                по
+                {% render_field form.marriage_year_till|attr:"disabled" class+="form-control d-inline-flex p-2 year_input" %}
+            </label>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Имеются ли у Вас дети</b></label>
+        {% render_field form.children class+="m-0 p-0" %}
+        {% render_field form.children_info|attr:"disabled" class+="form-control d-inline-flex p-2"  %}
+    </div>
+</div>

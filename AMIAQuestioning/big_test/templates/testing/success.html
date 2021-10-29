@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filter_tags_big %}
+
+{% block title %}<title>Анкета</title>{% endblock %}
+
+{% block nav %}{% include 'course/nav.html' %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <br>
+        <div class="card" style="width: 100%;">
+            <div class="card-body">
+                <h5 class="card-title">Вы успешно выполнили задание!</h5>
+                <p class="card-text">Благодарим за участие!</p>
+                <p class="card-text">Ожидайте окончания выполнения задания другими курсантами!</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        setTimeout(()=> window.location.href = 'https://www.amia.by/senior-management', 3000);
+    </script>
+{% endblock %}

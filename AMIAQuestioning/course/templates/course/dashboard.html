@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>DashBoard</title>
+    {% load widget_tweaks %}
+    {% load static %}
+    <style type="text/css">
+        ul {
+            list-style-type: none;
+        }
+        {#tr, td, th {#}
+        {#    text-align: center;#}
+        {#}#}
+    </style>
+{% endblock %}
+
+{% block nav %}
+    <div class="container-fluid">
+        {% include 'course/nav.html' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'course:dashboard' %}" method="get">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Группа</label>
+                        {% render_field filter.form.group class+="form-control"  %}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Порядковый номер</label>
+                        {% render_field filter.form.index_number class+="form-control"  %}
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Служба в Вооруженных силах</label>
+                        {% render_field filter.form.military class+="form-control"  %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>ФИО</label>
+                        {% render_field filter.form.fio class+="form-control"  %}
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Поиск</button>&nbsp;&nbsp;<a href="{% url 'course:dashboard' %}" class="btn btn-primary">Сбросить фильтр</a>
+        </form>
+    </div>
+    <br><br>
+
+    <div class="container-fluid">
+        <table class="table table-hover">
+            <thead class="table-primary">
+            <tr>
+                <th scope="col">Группа</th>
+                <th scope="col">ФИО</th>
+                <th scope="col">Порядковый номер</th>
+                <th scope="col">Национальность</th>
+                <th scope="col">Вероисповедание</th>
+                <th scope="col">Дата рождения</th>
+                <th scope="col">Место рождения</th>
+                <th scope="col">Образование</th>
+                <th scope="col">Год окончания</th>
+                <th scope="col">Специальность</th>
+                <th scope="col">Служба в ВС</th>
+                <th scope="col">Служба в ВС с:</th>
+                <th scope="col">Служба в ВС по:</th>
+                <th scope="col">Место службы</th>
+                <th scope="col">Род войск</th>
+                <th scope="col">Семейное положение</th>
+                <th scope="col">Ранее в браке</th>
+                <th scope="col">Состоял в браке с:</th>
+                <th scope="col">Состоял в браке по:</th>
+                <th scope="col">Имеются ли у Вас дети</th>
+                <th scope="col">Пол и год рождения</th>
+                <th scope="col">В дошкольном возрасте в вашем воспитании преимущественно принимали участие</th>
+                <th scope="col">Иное</th>
+                <th scope="col">Родители на момент поступления в Академию МВД</th>
+                <th scope="col">Какие взаимоотношения преобладают между вашими родителями, лицами их заменяющими</th>
+                <th scope="col">Братья и сестры</th>
+                <th scope="col">Интересы, увлечения, хобби</th>
+                <th scope="col">Интересы, увлечения, хобби (иное)</th>
+                <th scope="col">За последние 2–3 года, каким видом спорта вы занимались на постоянной основе?</th>
+                <th scope="col">Уровень занятий</th>
+                <th scope="col">Периодичность</th>
+                <th scope="col">Достижения</th>
+                <th scope="col">На постоянной основе спортом</th>
+                <th scope="col">Имеются ли хронические заболевания</th>
+                <th scope="col">Если да, то какие</th>
+                <th scope="col">Были ли у вас ранения, травмы, переломы, контузии</th>
+                <th scope="col">Если да, то какие</th>
+                <th scope="col">Особенности, которых вы стесняетесь</th>
+                <th scope="col">Особенности, которых вы стесняетесь (иное)</th>
+                <th scope="col">Родственники на учете</th>
+                <th scope="col">Родственники на учете (иное)</th>
+                <th scope="col">Материальная обеспеченность семьи</th>
+                <th scope="col">Жилое помещение</th>
+                <th scope="col">Жилое помещение (иное)</th>
+                <th scope="col">Число жилых комнат</th>
+                <th scope="col">Количество проживающих человек</th>
+                <th scope="col">Имеется ли отдельная комната</th>
+                <th scope="col">В какой деятельности Вы бы хотели реализовать себя</th>
+                <th scope="col">В какой деятельности Вы бы хотели реализовать себя (иное)</th>
+                <th scope="col">Какими способностями, Вы обладаете</th>
+                <th scope="col">Какими способностями, Вы обладаете (иное)</th>
+                <th scope="col">компьютерные / мобильные игры</th>
+                <th scope="col">Количество постоянных друзей</th>
+                <th scope="col">Мессенджеры</th>
+                <th scope="col">Курение</th>
+                <th scope="col">Если бы не поступил в Академия МВД</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in list %}
+                <tr>
+                    <td class="d-flex justify-content-center">{{ item.group }}</td>
+                    <td>{{ item.fio }}</td>
+                    <td>{{ item.index_number }}</td>
+                    <td>{{ item.nationality }}</td>
+                    <td>{{ item.religion }}</td>
+                    <td>{{ item.date_of_birth }}</td>
+                    <td>{{ item.birth_place }}</td>
+                    <td>{{ item.get_education }}</td>
+                    <td>{{ item.year_of_graduation }}</td>
+                    <td>{{ item.specialty }}</td>
+                    <td>{{ item.get_military }}</td>
+                    <td>{{ item.military_year_since|default:"" }}</td>
+                    <td>{{ item.military_year_till|default:"" }}</td>
+                    <td>{{ item.military_place|default:"" }}</td>
+                    <td>{{ item.type_of_army|default:"" }}</td>
+                    <td>{{ item.get_family_status }}</td>
+                    <td>{{ item.get_marriage }}</td>
+                    <td>{{ item.marriage_year_since|default:"" }}</td>
+                    <td>{{ item.marriage_year_till|default:"" }}</td>
+                    <td>{{ item.get_children }}</td>
+                    <td>{{ item.children_info|default:"" }}</td>
+                    <td>
+                        {%  for part in item.participation_in_education.all %}
+                            {{ part.participation }}, <br>
+                        {% endfor %}
+                    <td>{{ item.participation_in_education_other|default:"" }}</td>
+                    <td>{{ item.get_parents }}</td>
+                    <td>
+                        {%  for relationship in item.relationship.all %}
+                            {{ relationship.relationship }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.siblings }}</td>
+                    <td>
+                        {%  for interest in item.interest.all %}
+                            {{ interest.interest_name }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.interest_other|default:"" }}</td>
+                    <td>{{ item.kind_of_sport|default:"" }}</td>
+                    <td>{{ item.get_sport_level|default:"" }}</td>
+                    <td>{{ item.get_sport_periodicity }}</td>
+                    <td>{{ item.achievements }}</td>
+                    <td>{{ item.get_not_prof }}</td>
+                    <td>{{ item.get_is_chronic_diseases }}</td>
+                    <td>{{ item.chronic_diseases|default:"" }}</td>
+                    <td>{{ item.get_is_injury }}</td>
+                    <td>{{ item.injury }}</td>
+                    <td>
+                        {%  for particular_qualities in item.particular_qualities.all %}
+                            {{ particular_qualities.particular_qualities }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.particular_qualities_other }}</td>
+                    <td>
+                        {%  for relatives_record in item.relatives_record.all %}
+                            {{ relatives_record.record }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.relatives_record_other }}</td>
+                    <td>{{ item.get_level_of_wealth }}</td>
+                    <td>{{ item.get_living_conditions_premises }}</td>
+                    <td>{{ item.get_living_conditions_premises_other }}</td>
+                    <td>{{ item.get_living_conditions_room_count }}</td>
+                    <td>{{ item.get_living_conditions_people_count }}</td>
+                    <td>{{ item.get_is_own_room }}</td>
+                    <td>
+                        {%  for activity in item.activity.all %}
+                            {{ activity.activity }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.activity_other }}</td>
+                    <td>
+                        {%  for ability in item.ability.all %}
+                            {{ ability.ability }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.ability_other }}</td>
+                    <td>{{ item.get_gaming }}</td>
+                    <td>{{ item.friends_count }}</td>
+                    <td>
+                        {%  for messenger in item.messenger.all %}
+                            {{ messenger.messenger }}, <br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ item.get_smoking }}</td>
+                    <td>{{ item.if_had_not_entered }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+
+
+
+
+{% endblock %}

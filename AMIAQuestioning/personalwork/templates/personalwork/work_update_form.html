@@ -1,0 +1,10 @@
+{% extends 'personalwork/work_input_form.html' %}
+
+{% block title %}
+    <title>{{ work.lastname }} - редактирование</title>
+{% endblock %}
+
+{% block form_title %}
+    <form class="needs-validation" action="{% url 'personalwork:work_update'  work_id=work.id %}" method="POST"
+          novalidate>{% csrf_token %}
+{% endblock %}

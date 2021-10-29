@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Новая запись</title>
+    {% load widget_tweaks %}
+    {% load static %}
+{% endblock %}
+
+{% block nav %}
+    <div class="container-fluid">
+        {% include 'course/nav.html' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        {% for error in form.non_field_errors %}
+            <b>{{ field.label }} {{ error }}</b><br>
+        {% endfor %}
+
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <b>{{ field.label }} {{ error }}</b><br>
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        <div class="mt-2"></div>
+        {% block form_title %}
+            <form class="needs-validation" action="{% url 'personalwork:work_input' %}" method="POST" novalidate>
+            {% csrf_token %}
+        {% endblock %}
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Дата</label>
+                    {% render_field form.work_date class+="form-control" %}
+                    <div class="invalid-feedback">
+                        Обязательное поле
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Фамилия</label>
+                    {% render_field form.lastname class+="form-control" %}
+                    <div class="invalid-feedback">
+                        Обязательное поле
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Звание</label>
+                    {% render_field form.rank class+="form-control" %}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Подразделение</label>
+                    {% render_field form.subdivision class+="form-control" %}
+                    <div class="invalid-feedback">
+                        Обязательное поле
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Вид работы</label>
+                    {% render_field form.work_kind class+="form-control" %}
+                    <div class="invalid-feedback">
+                        Обязательное поле
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Запрос</label>
+                    {% render_field form.work_request class+="form-control" %}
+                    <div class="invalid-feedback">
+                        Обязательное поле
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Основание и проведенная работа</label>
+                    {% render_field form.work_done class+="form-control" %}
+                    <div class="invalid-feedback">
+                        Обязательное поле
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Выводы</label>
+                    {% render_field form.conclusion class+="form-control" rows="2" %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Рекомендации</label>
+                    {% render_field form.recommendations class+="form-control" rows="2" %}
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}

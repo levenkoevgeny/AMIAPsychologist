@@ -1,0 +1,398 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Анкета выпускника</title>
+    {% load widget_tweaks %}
+    {% load static %}
+    <style type="text/css">
+        ul {
+            list-style-type: none;
+        }
+    </style>
+{% endblock %}
+
+{% block nav %}
+    <div class="container-fluid">
+        {% include 'course/nav.html' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% include 'course/input_blocks/errors.html' %}
+        <form class="needs-validation" id="graduate_form" action="{% url 'graduate:add' %}" method="post" novalidate>{% csrf_token %}
+            <div class="jumbotron">
+                <div class="form-group row">
+                    <label class="col-md-6 col-form-label"><h3><b>АНКЕТА ВЫПУСКНИКА</b></h3></label>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><b>Группа</b></label>
+                            {% if form.group.errors %}
+                                {% for error in form.group.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.group class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>ФИО</b></label>
+                            {% if form.fio.errors %}
+                                {% for error in form.fio.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.fio class+="form-control" placeholder="ПРИМЕР: Иванов Иван Иванович" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><b>Должность</b></label>
+                            {% if form.position.errors %}
+                                {% for error in form.position.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.position class+="form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><b>Специальное звание</b></label>
+                            {% if form.rank.errors %}
+                                {% for error in form.rank.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.rank class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+
+                <br><div class="divider_main"></div><br>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><b>Семейное положение</b></label><br>
+                            <ul class="m-0 p-0">
+                                <li class="mb-1 mt-1">
+                                    <input class="marital_status" type="radio" id="id_marital_status_1" name="marital_status" value="1" checked>
+                                    <label>Холост/Не замужем</label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="marital_status" type="radio" id="id_marital_status_2" name="marital_status" value="2">
+                                    <label>Женат/замужем с
+                                        {% render_field form.married_from|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 100px; height: 30px;" %}
+                                    </label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="marital_status" type="radio" id="id_marital_status_3" name="marital_status" value="3">
+                                    <label>Разведен(а)</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Имеются ли у Вас дети?</b></label>
+                            {% if form.has_children.errors %}
+                                {% for error in form.has_children.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% if form.children_data.errors %}
+                                {% for error in form.children_data.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.has_children class+="m-0 p-0 has_children" %}
+                            {% render_field form.children_data|attr:"disabled" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Сведения о родителях, родственниках, лицах их заменяющих:</b></label><br>
+                            <ul class="m-0 p-0">
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_1" name="parents_data" value="1" checked>
+                                    <label>Мать и отец родные, состоят в браке, проживают совместно</label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_2" name="parents_data" value="2">
+                                    <label>Мать и отец родные, находятся в разводе</label>
+                                    <div class="ml-4">с какого года&nbsp;{% render_field form.divorced_from|attr:"disabled" class+="form-control d-inline-flex" style="width: 100px; height: 30px;" %}&nbsp;, проживают - {% render_field form.divorced_live|attr:"disabled" class+="d-inline-flex ml-1 pl-0" %}
+                                        <br><small>(если точной информацией не располагаете, укажите год приблизительно либо поставьте цифру «0»)</small>
+                                    </div>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_3" name="parents_data" value="3">
+                                    <label>Только мать, так как отец умер (погиб) в
+                                        {% render_field form.mother_only_father_died_in|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 100px; height: 30px;" %}&nbsp;году, иное:&nbsp;</label>
+                                    {% render_field form.mother_only_father_died_other|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 500px; height: 30px;" placeholder="ПРИМЕР: сведениями не располагаю" %}
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_4" name="parents_data" value="4">
+                                    <label>Только отец, мать умерла (погибла) в
+                                        {% render_field form.father_only_mother_died_in|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 100px; height: 30px;" %}&nbsp;году, иное:&nbsp;</label>
+                                    {% render_field form.father_only_mother_died_other|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 500px; height: 30px;" placeholder="ПРИМЕР: сведениями не располагаю" %}
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_5" name="parents_data" value="5">
+                                    <label>Родная мать проживает совместно с отчимом:&nbsp;
+                                        {% render_field form.stepfather_stepmother_marriage_mother|attr:"disabled" class+="d-inline-flex ml-1 pl-0 stepfather_stepmother_marriage_1" %}&nbsp;</label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_6" name="parents_data" value="6">
+                                    <label>Родной отец, проживает совместно с мачехой:&nbsp;
+                                        {% render_field form.stepfather_stepmother_marriage_father|attr:"disabled" class+="d-inline-flex ml-1 pl-0 stepfather_stepmother_marriage_2" %}</label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_7" name="parents_data" value="7">
+                                    <label>Сведениями о родителях&nbsp;
+                                        {% render_field form.mother_father_data|attr:"disabled" class+="d-inline-flex ml-1 pl-0" %} не располагаю</label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_8" name="parents_data" value="8">
+                                    <label>Опекуны&nbsp;
+                                        {% render_field form.guardians|attr:"disabled" class+="d-inline-flex ml-1 pl-0" %}, иное</label>
+                                    {% render_field form.guardians_other|attr:"disabled" class+="d-inline-flex form-control" style="width: 300px; height: 30px;" %}
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_9" name="parents_data" value="9">
+                                    <label>Приемные родители</label>
+                                </li>
+                                <li class="mb-1 mt-1">
+                                    <input class="parents" type="radio" id="id_parents_10" name="parents_data" value="10">
+                                    <label>Воспитанник детского дома</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Отец, отчим, лицо их заменяющее (укажите Ф.И.О., год рождения, кем работает, если не владеете информацией укажите «сведениями не располагаю»):</b></label>
+                            {% if form.father_stepfather.errors %}
+                                {% for error in form.father_stepfather.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.father_stepfather|attr:"rows:2" class+="form-control" placeholder="ПРИМЕР: Иванов Иван Иванович, 1960, инженер" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Мать, мачеха, лицо их заменяющее (укажите Ф.И.О., год рождения, кем работает, если не владеете информацией укажите «сведениями не располагаю»):</b></label>
+                            {% if form.mother_stepmother.errors %}
+                                {% for error in form.mother_stepmother.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.mother_stepmother|attr:"rows:2" class+="form-control" placeholder="Иванова Надежда Ивановна, 1971, учитель" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Родные, сводные, одноутробные братья и/или сестры (укажите Ф.И.О. и год рождения, если не имеете впишите слово «нет»):</b></label>
+                            {% if form.siblings.errors %}
+                                {% for error in form.siblings.errors %}
+                                    <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                                        <b>{{ error }}</b>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.siblings|attr:"rows:2" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+
+                <br><div class="divider_main"></div><br>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Занимались ли Вы дополнительно спортом вне пределах учебной программы?</b></label>
+                            {% render_field form.sport_is_only_by_program class+="form-control" style="width: 100px;" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Вид спорта:</b></label>
+                            {% render_field form.sport_kind|attr:"disabled" class+="form-control"%}
+                        </div>
+                        <div class="form-group">
+                            <label><b>Занимался на:</b></label>
+                            {% render_field form.sport_level|attr:"disabled" class+="d-inline-flex ml-2 p-0"%}
+                        </div>
+                        <div class="form-group">
+                            <label><b>Периодичность (укажите количество занятий в неделю):</b></label>
+                            {% render_field form.sport_period|attr:"disabled" class+="form-control d-inline-flex" style="width: 130px;" %}
+                        </div>
+                        <div class="form-group">
+                            <label><b>Достижения:</b></label>
+                            {% render_field form.sport_achievements|attr:"rows:1"|attr:"disabled" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+
+                <br><div class="divider_main"></div><br>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Ваши интересы и увлечения на текущий момент времени:</b></label>
+                            {% render_field form.interest|attr:"rows:1" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Удовлетворены ли Вы тем как проходило Ваше обучение?</b></label>
+                            {% render_field form.is_satisfied_with_the_training class+="m-0 p-0" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Оправдались ли Ваши ожидания по поводу обучения?</b></label>
+                            {% render_field form.expectations class+="m-0 p-0" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Как изменился Ваш характер за время обучения?</b></label>
+                            {% render_field form.character_change class+="m-0 p-0" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Какие качества характера у вас сформировались за время учебы? (укажите):</b></label>
+                            {% render_field form.traits_formed|attr:"rows:1" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Посоветовали бы Вы своим знакомым поступать в Академию МВД?</b></label>
+                            {% render_field form.would_advise class+="m-0 p-0" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>После окончания Академии МВД намерен (а):</b></label>
+                            {% render_field form.after_graduating class+="m-0 p-0" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Что в дальнейшем может побудить Вас уволиться со службы? (выберите не более 3-х вариантов)</b></label>
+                            {% render_field form.what_induce_to_quit class+="m-0 p-0 induce_to_quit" %}
+                            {% render_field form.what_induce_to_quit_other|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 500px;" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Что удерживает или мотивирует Вас продолжать службу? (выберите не более 3-х вариантов)</b></label>
+                            {% render_field form.what_keeps class+="m-0 p-0 what_keeps" %}
+                            {% render_field form.what_keeps_other|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 500px;" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Как в целом повлияли на ваше профессиональное становление преподаватели Академии МВД?</b></label>
+                            {% render_field form.how_did_teachers_influence class+="m-0 p-0" %}
+                            <label><b>Поясните Ваш ответ:</b></label>
+                            {% render_field form.how_did_teachers_influence_explain class+="form-control d-inline-flex p-2" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Как в целом повлияли на ваше профессиональное становление курсовые офицеры?</b></label>
+                            {% render_field form.how_did_leaders_influence class+="m-0 p-0" %}
+                            <label><b>Поясните Ваш ответ:</b></label>
+                            {% render_field form.how_did_leaders_influence_explain class+="form-control d-inline-flex p-2" %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Необходима ли Вам беседа с психологом? (получения консультации или помощи в решении трудностей):</b></label>
+                            {% render_field form.need_conversation class+="m-0 p-0" %}
+                            {% render_field form.need_conversation_theme|attr:"rows:1"|attr:"disabled" class+="form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label><b>Я информирован и знаю, что для получения психологической консультации (помощи) при необходимости я могу обратиться:</b></label>
+                            {% render_field form.i_inform class+="m-0 p-0" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить анкету!</button><br><br>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'graduate/js/main.js' %}"></script>
+{% endblock %}

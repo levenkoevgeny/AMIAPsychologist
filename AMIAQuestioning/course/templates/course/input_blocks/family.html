@@ -1,0 +1,111 @@
+{% load widget_tweaks %}
+
+<div class="row">
+    <div class="col-md-12">
+        <label><b>В дошкольном возрасте в вашем воспитании преимущественно принимали участие (хотя бы один вариант ответа):</b></label>
+        {% if form.participation_in_education.errors %}
+            {% for error in form.participation_in_education.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.participation_in_education class+="m-0 p-0" %}
+        {% render_field form.participation_in_education_other|attr:"disabled" class+="form-control d-inline-flex p-2" %}<br><br>
+
+
+        <label><b>Родители на момент поступления в Академию МВД (выберите один вариант ответа):</b></label>
+
+        <ul class="m-0 p-0">
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_1" name="parents" value="1" checked>
+                <label>Мать и отец родные, состоят в браке, проживают (выберите):&nbsp;</label>
+                <input type="radio" class="parents_1_radio" name="parents_in_marriage_live" id="id_parents_1_1" value="1" checked>&nbsp;совместно&nbsp;
+                <input type="radio" class="parents_1_radio" name="parents_in_marriage_live" id="id_parents_1_2" value="2" >&nbsp;раздельно&nbsp;
+            </li>
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_2" name="parents" value="2">
+                <label>Мать и отец родные, находятся в разводе с
+                    {% render_field form.parents_not_in_marriage_since|attr:"disabled" class+="form-control d-inline-flex p-2 parents_2_radio" style="width: 100px;" %}&nbsp;года, проживают:&nbsp;</label>
+                <input type="radio" class="parents_2_radio" name="parents_not_in_marriage_live" value="1" id="id_parents_2_1" disabled checked>&nbsp;совместно&nbsp;
+                <input type="radio" class="parents_2_radio" name="parents_not_in_marriage_live" value="2" id="id_parents_2_2" disabled>&nbsp;раздельно&nbsp;
+            </li>
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_3" name="parents" value="3">
+                <label>Родная (-ой) (выберите)
+                    <input type="radio" class="parents_3_radio" name="mother_father1" value="1" checked disabled>&nbsp;мать&nbsp;
+                    <input type="radio" class="parents_3_radio" name="mother_father1" value="2" disabled>&nbsp;отец
+                    , проживает совместно с
+                    <input type="radio" class="parents_3_radio" name="stepmother_stepfather1" value="2" checked disabled>&nbsp;отчимом&nbsp;
+                    <input type="radio" class="parents_3_radio" name="stepmother_stepfather1" value="1" disabled>&nbsp;мачехой
+                    в браке;
+                </label>
+            </li>
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_4" name="parents" value="4">
+                <label>Родная (-ой) (выберите)
+                    <input type="radio" class="parents_4_radio" name="mother_father2" value="1" checked disabled>&nbsp;мать&nbsp;
+                    <input type="radio" class="parents_4_radio" name="mother_father2" value="2" disabled>&nbsp;отец
+                    , проживает совместно с
+                    <input type="radio" class="parents_4_radio" name="stepmother_stepfather2" value="2" checked disabled>&nbsp;отчимом&nbsp;
+                    <input type="radio" class="parents_4_radio" name="stepmother_stepfather2" value="1" disabled>&nbsp;мачехой
+                    без регистрации брака
+                </label>
+            </li>
+            <li class="mb-1 mt-1 d-flex align-items-center">
+                <input class="parents" type="radio" id="id_parents_5" name="parents" value="5">
+                <label class="form-check-label">&nbsp;Только мать, так как отец умер (погиб) в
+                    {% render_field form.mother_only_father_died_year|attr:"disabled" class+="form-control d-inline-flex p-2 parents_5_radio" style="width: 100px;" %}
+                    году, иное&nbsp;
+                </label>{% render_field form.mother_only_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2 parents_5_radio year_input" style="width: 400px;" %}
+            </li>
+            <li class="mb-1 mt-1 d-flex align-items-center">
+                <input class="parents" type="radio" id="id_parents_6" name="parents" value="6">
+                <label class="form-check-label">&nbsp;Только отец, мать умерла (погибла) в
+                    {% render_field form.father_only_mother_died_year|attr:"disabled" class+="form-control d-inline-flex p-2 parents_6_radio" style="width: 100px;" %}
+                    году, иное&nbsp;
+                </label>{% render_field form.father_only_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2 parents_6_radio" style="width: 400px;" %}
+            </li>
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_7" name="parents" value="7">
+                <label>Опекуны:</label>
+                {% render_field form.guardian|attr:"disabled" class+="d-inline-flex pt-3 pl-0 m-0" %}&nbsp;
+                {% render_field form.guardian_other|attr:"disabled" class+="form-control d-inline-flex p-2" style="width: 300px;" %}
+            </li>
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_8" name="parents" value="8">
+                <label>Приемные родители, состоят в браке, проживают совместно</label>
+            </li>
+            <li class="mb-1 mt-1">
+                <input class="parents" type="radio" id="id_parents_9" name="parents" value="9">
+                <label>Воспитанник детского дома</label>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <label><b>Какие взаимоотношения преобладают между вашими родителями, лицами их заменяющими:</b></label>
+        {% if form.relationship.errors %}
+            {% for error in form.relationship.errors %}
+                <div class="alert alert-danger m-0 p-0" role="alert" style="display: inline-block;">
+                    <b>{{ error }}</b>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% render_field form.relationship class+="m-0 p-0" %}
+        {% render_field form.relationship_other|attr:"rows:1"|attr:"disabled" class+="form-control d-inline-flex p-2"  %}
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label><b>Братья и сестры (родные, сводные, одноутробные), укажите Ф.И.О. и дату рождения:</b></label>
+            {% render_field form.siblings|attr:"rows:1" class+="form-control" %}
+            <small>Если братьев и/или сестер нет, то запишите "НЕТ"</small>
+        </div>
+    </div>
+</div>
